@@ -1,63 +1,61 @@
-<!-- ══════════════════════════════════════════════════════════════════ -->
-<!--                     NASHID K  —  PROJECT METRICS                   -->
-<!-- ══════════════════════════════════════════════════════════════════ -->
+# Grind API — Job Tracking Backend
 
-# 🚀 Grind-server
+Express and MongoDB API for the [Grind job-tracking application](https://github.com/Nashid-k/grind-client).
 
-<p align="center">
-  ![](https://img.shields.io/badge/Express-4.x-lightgrey?style=flat-square&logo=express) ![](https://img.shields.io/badge/MongoDB-7.x-green?style=flat-square&logo=mongodb) 
-</p>
+## Related repository
 
-<p align="center">
-  <strong>A modern web application built with JavaScript.</strong>
-</p>
+- **Web client:** [Nashid-k/grind-client](https://github.com/Nashid-k/grind-client)
+- **API server:** this repository
 
----
+## API modules
 
-## 📌 Project Overview
-This repository contains **Grind-server**, engineered with modern design standards, modular structures, and clean coding architectures.
+| Base path | Responsibility |
+|---|---|
+| `/api/auth` | Authentication |
+| `/api/jobs` | Job records and tracking |
+| `/api/friends` | Friends and social features |
+| `/api/leaderboard` | Leaderboard |
+| `/api/challenges` | Challenges |
+| `/api/prep` | Interview and preparation resources |
+| `/api/reviews` | Reviews |
 
-### ✨ Core Features
-*   **Express API Routing:** Modular routes and middleware handlers.
-*   **Mongoose Schemas:** Managed data validation and structured querying.
+The API uses Node.js, Express, Mongoose, and MongoDB. It loads configuration with dotenv and connects to MongoDB before starting the HTTP listener.
 
----
+## Requirements
 
-## 📂 Project Architecture
+- Node.js (an LTS release recommended)
+- MongoDB instance (local or hosted)
 
-```text
-├── models/       # Database validation models
-├── routes/       # API endpoints and routers
-├── index.js      # Main runtime entry point
-└── package.json  # Project configurations
+## Local development
+
+```bash
+git clone https://github.com/Nashid-k/grind-server.git
+cd grind-server
+npm install
+cp .env.example .env
 ```
 
----
+Set these variables in your local `.env` file:
 
-## ⚙️ Local Development Setup
+| Variable | Purpose |
+|---|---|
+| `PORT` | HTTP port (defaults to `5000`) |
+| `DATABASE_URL` | MongoDB connection string |
+| `JWT_SECRET` | Secret used for token signing |
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/Nashid-k/Grind-server.git
-   cd Grind-server
-   ```
+Start the development server with `npm run dev`; use `npm start` for the standard start command.
 
-2. **Install Dependencies:**
-   ```bash
-   npm install
-   ```
+## Project structure
 
-3. **Configure Environment:**
-   *(If applicable, copy the `.env.example` file to `.env` and fill in variables)*
+```text
+.
+├── models/       # Mongoose models
+├── routes/       # Express route modules
+├── db.js         # Database connection
+├── index.js      # Express app and route registration
+└── .env.example  # Environment variable names
+```
 
-4. **Start local dev server:**
-   ```bash
-   npm run dev
-   ```
+## Security
 
----
-
-## 🛡️ Security & Best Practices Implemented
-*   **Strict Separations:** Modular separation between config, logic, and view components.
-*   **Environment Configuration:** Secure variables kept out of repository scopes via dotenv.
-*   **Git Standards:** Maintained clean histories and semantic commit protocols.
+Never commit `.env` or real credentials. Use a unique, high-entropy `JWT_SECRET` in each environment, restrict CORS origins before production, and rotate any credential that has been committed to a public repository.
