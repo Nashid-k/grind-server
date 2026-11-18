@@ -1,6 +1,5 @@
+import 'dotenv/config';
 import mongoose from 'mongoose';
-
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://nashidk1999_db_user:PONASVh7S3b3gcca@cluster0.wlhw2w4.mongodb.net/?appName=Cluster0';
 
 let cached = global.mongoose;
 
@@ -9,19 +8,19 @@ if (!cached) {
 }
 
 async function connectDB() {
+  const mongoUri = process.env.MONGO_URI;
+  if (!mongoUri) {
+    throw new Error('MONGO_URI must be configured before connecting to MongoDB.');
+  }
+
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(mongoUri, { bufferCommands: false });
   }
+
   cached.conn = await cached.promise;
   return cached.conn;
 }
