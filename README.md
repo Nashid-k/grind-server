@@ -1,17 +1,12 @@
-# Grind API — Job Tracking Backend
+# Grind API — Career Tracker Backend
 
-Express and MongoDB API for the [Grind job-tracking application](https://github.com/Nashid-k/grind-client).
-
-## Related repository
-
-- **Web client:** [Nashid-k/grind-client](https://github.com/Nashid-k/grind-client)
-- **API server:** this repository
+Express and MongoDB API for the [Grind career-tracking application](https://github.com/Nashid-k/grind-client).
 
 ## API modules
 
 | Base path | Responsibility |
 |---|---|
-| `/api/auth` | Authentication |
+| `/api/auth` | Registration, login and Google sign-in handler |
 | `/api/jobs` | Job records and tracking |
 | `/api/friends` | Friends and social features |
 | `/api/leaderboard` | Leaderboard |
@@ -19,12 +14,9 @@ Express and MongoDB API for the [Grind job-tracking application](https://github.
 | `/api/prep` | Interview and preparation resources |
 | `/api/reviews` | Reviews |
 
-The API uses Node.js, Express, Mongoose, and MongoDB. It loads configuration with dotenv and connects to MongoDB before starting the HTTP listener.
+## Stack
 
-## Requirements
-
-- Node.js (an LTS release recommended)
-- MongoDB instance (local or hosted)
+Node.js, Express, Mongoose, MongoDB, dotenv and Axios.
 
 ## Local development
 
@@ -33,29 +25,22 @@ git clone https://github.com/Nashid-k/grind-server.git
 cd grind-server
 npm install
 cp .env.example .env
+npm run dev
 ```
 
-Set these variables in your local `.env` file:
+The API defaults to port `5000`.
+
+## Environment
 
 | Variable | Purpose |
 |---|---|
-| `PORT` | HTTP port (defaults to `5000`) |
-| `DATABASE_URL` | MongoDB connection string |
-| `JWT_SECRET` | Secret used for token signing |
+| `PORT` | HTTP port |
+| `MONGO_URI` | MongoDB connection string |
+| `JWT_SECRET` | Reserved for token-based authentication; current routes do not yet issue or verify JWTs |
+| `CLIENT_URL` | Allowed frontend origin for CORS |
 
-Start the development server with `npm run dev`; use `npm start` for the standard start command.
+## Important security status
 
-## Project structure
+**Do not use real user accounts or deploy this API as a production authentication service yet.** The current username/password routes store and compare passwords as plain text. The Google sign-in handler also needs server-side ID-token verification. User-facing routes need authorization checks before they can be considered secure.
 
-```text
-.
-├── models/       # Mongoose models
-├── routes/       # Express route modules
-├── db.js         # Database connection
-├── index.js      # Express app and route registration
-└── .env.example  # Environment variable names
-```
-
-## Security
-
-Never commit `.env` or real credentials. Use a unique, high-entropy `JWT_SECRET` in each environment, restrict CORS origins before production, and rotate any credential that has been committed to a public repository.
+The database connection string is read from `MONGO_URI`; no credential is embedded in source code. Rotate any MongoDB credential that was previously committed to a public repository.
