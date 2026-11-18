@@ -1,5 +1,5 @@
 {
-  "name": "job-tracker-server",
+  "name": "grind-api",
   "version": "1.0.0",
   "description": "Backend for Job Tracker",
   "main": "index.js",
